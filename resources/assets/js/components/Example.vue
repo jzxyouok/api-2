@@ -7,6 +7,7 @@
 
                     <div class="panel-body">
                         I'm an example component!
+                        <el-button>按钮</el-button>
                     </div>
                 </div>
             </div>
@@ -16,8 +17,6 @@
 
 <script>
     export default {
-        mounted() {
-            console.log('Component mounted.')
-        }
+        name: 'example'
     }
 </script>
