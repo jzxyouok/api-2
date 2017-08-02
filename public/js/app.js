@@ -13927,8 +13927,9 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_3_elem
 new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
     el: '#app',
     router: __WEBPACK_IMPORTED_MODULE_1__router__["a" /* default */],
-    template: '<App/>',
-    components: { App: __WEBPACK_IMPORTED_MODULE_2__App_vue___default.a }
+    render: function render(h) {
+        return h(__WEBPACK_IMPORTED_MODULE_2__App_vue___default.a);
+    }
 });
 
 /***/ }),
@@ -47416,7 +47417,33 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    name: 'example'
+    data: function data() {
+        return {
+            headers: { 'X-CSRF-TOKEN': axios.defaults.headers.common['X-CSRF-TOKEN'] },
+            dialogImageUrl: '',
+            dialogVisible: false
+        };
+    },
+
+    methods: {
+        handleRemove: function handleRemove(file, fileList) {
+            axios.delete('/file/del', { filename: file.response }).then(function (rs) {
+                console.log(rs);
+            }).catch(function (err) {
+                console.log(err);
+            });
+        },
+        handlePictureCardPreview: function handlePictureCardPreview(file) {
+            this.dialogImageUrl = file.url;
+            this.dialogVisible = true;
+        },
+        errorBack: function errorBack(err, t) {
+            this.$message({
+                type: 'warning',
+                message: '图片未上传成功'
+            });
+        }
+    }
 });
 
 /***/ }),
@@ -47425,18 +47452,39 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
-    staticClass: "container"
-  }, [_c('div', {
-    staticClass: "row"
-  }, [_c('div', {
-    staticClass: "col-md-8 col-md-offset-2"
-  }, [_c('div', {
-    staticClass: "panel panel-default"
-  }, [_c('div', {
-    staticClass: "panel-heading"
-  }, [_vm._v("Example Component")]), _vm._v(" "), _c('div', {
-    staticClass: "panel-body"
-  }, [_vm._v("\n                    I'm an example component!\n                    "), _c('el-button', [_vm._v("按钮")])], 1)])])])])
+    staticClass: "container",
+    staticStyle: {
+      "margin-top": "50px"
+    }
+  }, [_c('el-upload', {
+    attrs: {
+      "action": "/upload",
+      "list-type": "picture-card",
+      "headers": _vm.headers,
+      "on-preview": _vm.handlePictureCardPreview,
+      "on-remove": _vm.handleRemove,
+      "on-error": _vm.errorBack
+    }
+  }, [_c('i', {
+    staticClass: "el-icon-plus"
+  })]), _vm._v(" "), _c('el-dialog', {
+    attrs: {
+      "size": "tiny"
+    },
+    model: {
+      value: (_vm.dialogVisible),
+      callback: function($$v) {
+        _vm.dialogVisible = $$v
+      },
+      expression: "dialogVisible"
+    }
+  }, [_c('img', {
+    attrs: {
+      "width": "100%",
+      "src": _vm.dialogImageUrl,
+      "alt": "头像"
+    }
+  })])], 1)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
