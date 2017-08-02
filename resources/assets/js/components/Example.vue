@@ -26,7 +26,7 @@
         },
         methods: {
             handleRemove(file, fileList) {
-                axios.delete('/file/del', {filename: file.response}).then(rs => {
+                axios.delete('/file/del', {params: {filename: file.response}}).then(rs => {
                     console.log(rs);
                 }).catch(err => {
                     console.log(err);
