@@ -25,9 +25,9 @@
         methods: {
             handleRemove(file, fileList) {
                 axios.delete('/api/file/del', {params: {fileUrl: file.response}}).then(rs => {
-                    console.log(rs);
+                    this.$message.success('图片删除成功');
                 }).catch(err => {
-                    console.log(err);
+                    this.$message.warning('图片删除失败');
                 })
             },
             handlePictureCardPreview(file) {
@@ -35,10 +35,7 @@
                 this.dialogVisible = true;
             },
             errorBack(err, t) {
-                this.$message({
-                    type: 'warning',
-                    message: '图片未上传成功'
-                });
+                this.$message.error('上传发生错误');
             }
         }
     }

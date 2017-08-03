@@ -47425,10 +47425,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     methods: {
         handleRemove: function handleRemove(file, fileList) {
+            var _this = this;
+
             axios.delete('/api/file/del', { params: { fileUrl: file.response } }).then(function (rs) {
-                console.log(rs);
+                _this.$message.success('图片删除成功');
             }).catch(function (err) {
-                console.log(err);
+                _this.$message.warning('图片删除失败');
             });
         },
         handlePictureCardPreview: function handlePictureCardPreview(file) {
@@ -47436,10 +47438,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.dialogVisible = true;
         },
         errorBack: function errorBack(err, t) {
-            this.$message({
-                type: 'warning',
-                message: '图片未上传成功'
-            });
+            this.$message.error('上传发生错误');
         }
     }
 });
