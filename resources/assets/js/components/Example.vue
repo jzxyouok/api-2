@@ -1,9 +1,8 @@
 <template>
     <div class="container" style="margin-top: 50px;">
         <el-upload
-                action="/upload"
+                action="/api/upload"
                 list-type="picture-card"
-                :headers="headers"
                 :on-preview="handlePictureCardPreview"
                 :on-remove="handleRemove"
                 :on-error="errorBack">
@@ -19,14 +18,13 @@
     export default {
         data() {
             return {
-                headers: {'X-CSRF-TOKEN': axios.defaults.headers.common['X-CSRF-TOKEN']},
                 dialogImageUrl: '',
                 dialogVisible: false
             }
         },
         methods: {
             handleRemove(file, fileList) {
-                axios.delete('/file/del', {params: {filename: file.response}}).then(rs => {
+                axios.delete('/api/file/del', {params: {fileUrl: file.response}}).then(rs => {
                     console.log(rs);
                 }).catch(err => {
                     console.log(err);

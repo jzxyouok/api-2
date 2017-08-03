@@ -47414,12 +47414,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
-            headers: { 'X-CSRF-TOKEN': axios.defaults.headers.common['X-CSRF-TOKEN'] },
             dialogImageUrl: '',
             dialogVisible: false
         };
@@ -47427,7 +47425,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     methods: {
         handleRemove: function handleRemove(file, fileList) {
-            axios.delete('/file/del', { filename: file.response }).then(function (rs) {
+            axios.delete('/api/file/del', { params: { fileUrl: file.response } }).then(function (rs) {
                 console.log(rs);
             }).catch(function (err) {
                 console.log(err);
@@ -47458,9 +47456,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('el-upload', {
     attrs: {
-      "action": "/upload",
+      "action": "/api/upload",
       "list-type": "picture-card",
-      "headers": _vm.headers,
       "on-preview": _vm.handlePictureCardPreview,
       "on-remove": _vm.handleRemove,
       "on-error": _vm.errorBack
