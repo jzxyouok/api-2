@@ -184,7 +184,8 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         jeremykenedy\LaravelRoles\RolesServiceProvider::class,
-        Intervention\Image\ImageServiceProvider::class
+        Intervention\Image\ImageServiceProvider::class,
+        Barryvdh\Cors\ServiceProvider::class,
     ],
 
     /*
