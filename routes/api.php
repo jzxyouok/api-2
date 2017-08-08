@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\Storage;
 Route::group(['namespace' => 'Api\Admin', 'prefix' => 'admin'], function () {
     Route::post('/login', 'LoginController@login');
     Route::post('/logout', 'LoginController@logout');
+
+    // 登录保护
+    Route::group(['middleware' => ['auth:api']], function () {
+        Route::get('/sysInfo', 'InfoController');
+    });
 });
 
 Route::post('/upload', function (\Illuminate\Http\Request $request) {

@@ -1,4 +1,5 @@
 require('./bootstrap');
+/*
 
 import Vue from 'vue'
 
@@ -15,4 +16,5 @@ new Vue({
     router,
     render: h => h(App)
 })
+*/
 
