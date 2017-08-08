@@ -24,7 +24,7 @@
         },
         methods: {
             handleRemove(file, fileList) {
-                axios.delete('/api/file/del', {params: {fileUrl: file.response}}).then(rs => {
+                axios.delete('/api/file/del', {params: {fileUrl: file.response.path}}).then(rs => {
                     this.$message.success('图片删除成功');
                 }).catch(err => {
                     this.$message.warning('图片删除失败');
@@ -40,3 +40,8 @@
         }
     }
 </script>
+<style>
+    .el-upload__input {
+        display: none !important;
+    }
+</style>

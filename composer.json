@@ -8,6 +8,7 @@
         "php": ">=5.6.4",
         "barryvdh/laravel-cors": "^0.9.2",
         "intervention/image": "^2.4",
+        "intervention/imagecache": "^2.3",
         "jeremykenedy/laravel-roles": "^1.0",
         "laravel/framework": "5.4.*",
         "laravel/tinker": "~1.0",

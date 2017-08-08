@@ -12,15 +12,18 @@ Route::post('/logout', 'Api\LoginController@logout');
 
 Route::post('/upload', function (\Illuminate\Http\Request $request) {
     if ($request->hasFile('file')) {
-        return $request->file('file')->store('avatars');
+        $disk = 'public';
+        $path = $request->file('file')->store('avatars', $disk);
+        return ['url' => Storage::url($path), 'path' => $path, 'disk' => $disk];
     }
     return response('file does not exist', 502);
 });
 
 Route::delete('/file/del', function (\Illuminate\Http\Request $request) {
     $fileUrl = $request->get('fileUrl');
-    if (Storage::exists($fileUrl)) {
-        return Storage::delete($fileUrl) ? 'file delete success' : response('file delete fail', 502);
+    $disk = $request->get('disk', 'public');
+    if (Storage::disk($disk)->exists($fileUrl)) {
+        return Storage::disk($disk)->delete($fileUrl) ? 'file delete success' : response('file delete fail', 502);
     }
-    return response('parameter is incorrect or file does not exist', 502);
+    return response('file does not exist', 502);
 });
