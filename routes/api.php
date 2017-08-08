@@ -7,8 +7,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 use Illuminate\Support\Facades\Storage;
 
-Route::post('/login', 'Api\Admin\LoginController@login');
-Route::post('/logout', 'Api\Admin\LoginController@logout');
+Route::group(['namespace' => 'Api\Admin', 'prefix' => 'admin'], function () {
+    Route::post('/login', 'LoginController@login');
+    Route::post('/logout', 'LoginController@logout');
+});
 
 Route::post('/upload', function (\Illuminate\Http\Request $request) {
     if ($request->hasFile('file')) {
