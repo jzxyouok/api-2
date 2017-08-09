@@ -7,6 +7,7 @@ use App\Tools\PHPTree;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class MenuController extends Controller
 {
@@ -25,33 +26,48 @@ class MenuController extends Controller
 
     public function store(Request $request)
     {
-        return ['isAjax' => $request->isJson()];
-
-        Validator::make($request->all(), [
+        $data = $request->all();
+        Validator::make($data, [
             'parent_id' => 'integer',
             'title' => 'required|unique:menus|max:50',
+            'path' => 'required|unique:menus|max:150',
+            'component' => 'required|max:150',
             'sort' => 'integer',
             'is_show' => 'in:T,F',
-        ])->validate();
+        ], [], $this->attributes())->validate();
 
-        return Menu::create($request->all());
+        return Menu::create($data);
     }
 
 
     public function show(Menu $menu)
     {
-        //
+        return $menu;
     }
 
 
     public function update(Request $request, Menu $menu)
     {
-        //
+        $data = $request->all();
+        Validator::make($data, [
+            'parent_id' => 'integer',
+            'title' => ['required_without_all:parent_id,path,component,sort,is_show', 'max:50', Rule::unique('menus')->ignore($menu->id)],
+            'path' => ['max:150', Rule::unique('menus')->ignore($menu->id)],
+            'component' => 'max:150',
+            'sort' => 'integer',
+            'is_show' => 'in:T,F',
+        ], [], $this->attributes())->validate();
+        return $menu->update($data) ? 'success' : response('fail', 422);
     }
 
 
     public function destroy(Menu $menu)
     {
-        //
+        return $menu->delete() ? 'success' : response('fail', 422);
+    }
+
+    protected function attributes()
+    {
+        return ['parent_id' => '上级节点', 'path' => '路由地址', 'component' => '组件', 'sort' => '排序', 'is_show' => '是否显示'];
     }
 }

@@ -5,25 +5,24 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });*/
 
-use Illuminate\Support\Facades\Storage;
+//use Illuminate\Support\Facades\Storage;
 
 Route::group(['namespace' => 'Api\Admin', 'prefix' => 'admin'], function () {
     Route::post('login', 'LoginController@login');
     Route::post('logout', 'LoginController@logout');
 
     // 登录保护
-/*    Route::group(['middleware' => ['auth:api']], function () {
-        Route::get('sysInfo', 'InfoController');
-    });*/
+    /*    Route::group(['middleware' => ['auth:api']], function () {
+            Route::get('sysInfo', 'InfoController');
+        });*/
 
     Route::get('sysInfo', 'InfoController');
 
     Route::get('menu', 'MenuController@index');
     Route::post('menu', 'MenuController@store');
     Route::delete('menu/{menu}', 'MenuController@destroy');
-    Route::put('menu/{menu}', 'MenuController@update');
-
-
+    Route::patch('menu/{menu}', 'MenuController@update');
+    Route::get('menu/{menu}', 'MenuController@show');
 
 });
 
