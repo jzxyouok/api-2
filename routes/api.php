@@ -34,6 +34,8 @@ Route::group(['namespace' => 'Api\Admin', 'prefix' => 'admin'], function () {
         Route::get('user/{user}', 'UserController@show');
 
         Route::patch('user/update/myInfo', 'UserController@updateMyInfo');
+
+        Route::patch('user/syncRoles/{user}', 'UserController@syncRoles');
     });
 });
 

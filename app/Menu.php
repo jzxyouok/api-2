@@ -23,13 +23,13 @@ class Menu extends Model
         return $this->belongsToMany(Role::class);
     }
 
-    public function firstChildren()
+    public function children()
     {
         return $this->hasMany(Menu::class, 'parent_id');
     }
 
-    public function children()
+    public function allChildren()
     {
-        return $this->firstChildren()->with('children');
+        return $this->children()->with('allChildren');
     }
 }

@@ -13,7 +13,7 @@ class MenuController extends Controller
 
     public function index(Request $request)
     {
-        $menus = Menu::with('children')->where(function ($query) use ($request) {
+        $menus = Menu::with('allChildren')->where(function ($query) use ($request) {
             $request->title ? $query->where('title', 'like', '%' . $request->title . '%') : null;
         })->where('parent_id', 0)->orderBy('sort')->get();
         return $menus;

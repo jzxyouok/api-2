@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use jeremykenedy\LaravelRoles\Models\Role;
 
 class UserController extends Controller
 {
@@ -37,14 +38,18 @@ class UserController extends Controller
 
     public function update(Request $request, User $user)
     {
-        $data = $request->except('password', 'disable_at');
+        $data = $request->except('disable_at');
         Validator::make($data, [
             'name' => ['required_without_all:email,password,disable,avatar', 'between:3,15', Rule::unique('users')->ignore($user->id)],
             'email' => ['email', 'between:6,30', Rule::unique('users')->ignore($user->id)],
+            'password' => 'between:6,15',
             'disable' => 'in:T,F',
             'avatar' => 'between:6,255',
         ])->validate();
 
+        if ($request->has('password')) {
+            $data['password'] = bcrypt($data['password']);
+        }
         if ($request->has('disable')) {
             $data['disable_at'] = $data['disable'] === 'T' ? Carbon::now() : null;
         }
@@ -58,6 +63,11 @@ class UserController extends Controller
         return $user->delete() ? 'success' : response('delete user fail', 422);
     }
 
+    /**
+     * @desc 更新个人信息
+     * @param Request $request
+     * @return mixed
+     */
     public function updateMyInfo(Request $request)
     {
         $user = $request->user();
@@ -70,4 +80,23 @@ class UserController extends Controller
         $user->update($data);
         return $user;
     }
+
+    /**
+     * @desc 同步用户角色
+     * @param Request $request
+     * @param User $user
+     * @return \Illuminate\Database\Eloquent\Collection|null
+     */
+    public function syncRoles(Request $request, User $user)
+    {
+        Validator::make($request->all(), [
+            'roles' => 'array',
+        ])->validate();
+
+        $roles = Role::find($request->get('roles'));
+
+        $user->syncRoles($roles);
+        return $user->roles;
+    }
+
 }
