@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Menu;
-use App\Tools\PHPTree;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
@@ -14,12 +13,9 @@ class MenuController extends Controller
 
     public function index(Request $request)
     {
-        $menus = Menu::where(function ($query) use ($request) {
+        $menus = Menu::with('children')->where(function ($query) use ($request) {
             $request->title ? $query->where('title', 'like', '%' . $request->title . '%') : null;
-        })->orderBy('sort')->get();
-        if ($menus) {
-            $menus = PHPTree::makeTree($menus->toArray());
-        }
+        })->where('parent_id', 0)->orderBy('sort')->get();
         return $menus;
     }
 
@@ -61,6 +57,10 @@ class MenuController extends Controller
 
     public function destroy(Menu $menu)
     {
+        $children = $menu->children;
+        if (!!count($children)) {
+            return response(['children' => $children], 422);
+        }
         return $menu->delete() ? 'success' : response('delete menu fail', 422);
     }
 
