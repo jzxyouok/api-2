@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use jeremykenedy\LaravelRoles\Models\Permission;
 use jeremykenedy\LaravelRoles\Models\Role;
 
 class RoleController extends Controller
@@ -31,7 +32,7 @@ class RoleController extends Controller
 
     public function show(Role $role)
     {
-        return $role;
+        return Role::with('permissions', 'users')->find($role->id);
     }
 
     public function update(Request $request, Role $role)
@@ -53,5 +54,20 @@ class RoleController extends Controller
         return $role->delete() ? 'success' : response('delete role fail', 422);
     }
 
+    public function syncPermissions(Request $request, Role $role)
+    {
+        Validator::make($request->all(), [
+            'permissions' => 'array',
+        ])->validate();
 
+        $permissions = Permission::find($request->get('permissions'));
+
+        $role->syncPermissions($permissions);
+        return $role->permissions;
+    }
+
+    public function permissionList()
+    {
+        return Permission::all();
+    }
 }
