@@ -15,14 +15,13 @@ class MenuController extends Controller
     public function index(Request $request)
     {
         $menus = Menu::where(function ($query) use ($request) {
-            $request->keyword ? $query->where('title', 'like', '%' . $request->keyword . '%') : null;
+            $request->title ? $query->where('title', 'like', '%' . $request->title . '%') : null;
         })->orderBy('sort')->get();
         if ($menus) {
             $menus = PHPTree::makeTree($menus->toArray());
         }
         return $menus;
     }
-
 
     public function store(Request $request)
     {
@@ -34,17 +33,15 @@ class MenuController extends Controller
             'component' => 'required|max:150',
             'sort' => 'integer',
             'is_show' => 'in:T,F',
-        ], [], $this->attributes())->validate();
+        ])->validate();
 
         return Menu::create($data);
     }
 
-
     public function show(Menu $menu)
     {
-        return $menu;
+        return Menu::with('roles')->find($menu->id);
     }
-
 
     public function update(Request $request, Menu $menu)
     {
@@ -56,18 +53,15 @@ class MenuController extends Controller
             'component' => 'max:150',
             'sort' => 'integer',
             'is_show' => 'in:T,F',
-        ], [], $this->attributes())->validate();
-        return $menu->update($data) ? 'success' : response('fail', 422);
-    }
+        ])->validate();
 
+        $menu->update($data);
+        return $menu;
+    }
 
     public function destroy(Menu $menu)
     {
-        return $menu->delete() ? 'success' : response('fail', 422);
+        return $menu->delete() ? 'success' : response('delete menu fail', 422);
     }
 
-    protected function attributes()
-    {
-        return ['parent_id' => '上级节点', 'path' => '路由地址', 'component' => '组件', 'sort' => '排序', 'is_show' => '是否显示'];
-    }
 }

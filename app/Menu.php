@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use jeremykenedy\LaravelRoles\Models\Role;
 
 class Menu extends Model
 {
@@ -15,6 +16,11 @@ class Menu extends Model
     public function getIsShowAttribute($value)
     {
         return $value === 'T';
+    }
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
     }
 
 }

@@ -12,18 +12,29 @@ Route::group(['namespace' => 'Api\Admin', 'prefix' => 'admin'], function () {
     Route::post('logout', 'LoginController@logout');
 
     // 登录保护
-    /*    Route::group(['middleware' => ['auth:api']], function () {
-            Route::get('sysInfo', 'InfoController');
-        });*/
+    Route::group(['middleware' => ['auth:api']], function () {
+        Route::get('sysInfo', 'InfoController');
 
-    Route::get('sysInfo', 'InfoController');
+        Route::get('menu', 'MenuController@index');
+        Route::post('menu', 'MenuController@store');
+        Route::delete('menu/{menu}', 'MenuController@destroy');
+        Route::patch('menu/{menu}', 'MenuController@update');
+        Route::get('menu/{menu}', 'MenuController@show');
 
-    Route::get('menu', 'MenuController@index');
-    Route::post('menu', 'MenuController@store');
-    Route::delete('menu/{menu}', 'MenuController@destroy');
-    Route::patch('menu/{menu}', 'MenuController@update');
-    Route::get('menu/{menu}', 'MenuController@show');
+        Route::get('role', 'RoleController@index');
+        Route::post('role', 'RoleController@store');
+        Route::delete('role/{role}', 'RoleController@destroy');
+        Route::patch('role/{role}', 'RoleController@update');
+        Route::get('role/{role}', 'RoleController@show');
 
+        Route::get('user', 'UserController@index');
+        Route::post('user', 'UserController@store');
+        Route::delete('user/{user}', 'UserController@destroy');
+        Route::patch('user/{user}', 'UserController@update');
+        Route::get('user/{user}', 'UserController@show');
+
+        Route::patch('user/update/myInfo', 'UserController@updateMyInfo');
+    });
 });
 
 /*Route::post('upload', function (\Illuminate\Http\Request $request) {
