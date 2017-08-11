@@ -36,7 +36,9 @@ class LoginController extends Controller
         $user = $this->guard()->user();
         $user->api_token = str_random(60);
         $user->save();
-        return $user;
+
+        $permissions = $user->getPermissions();
+        return ['userInfo' => $user, 'permissions' => $permissions];
     }
 
 }
