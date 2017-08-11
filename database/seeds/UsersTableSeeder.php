@@ -37,8 +37,22 @@ class UsersTableSeeder extends Seeder
             foreach ($permissions as $permission) {
                 $newUser->attachPermission($permission);
             }
-
         }
 
+        if (User::where('email', '=', '953547161@qq.com')->first() === null) {
+
+            $newUser = User::create([
+                'name' => 'liyanchun',
+                'email' => '953547161@qq.com',
+                'password' => bcrypt('lyc123'),
+                'api_token' => str_random(60),
+                'disable_at' => null,
+            ]);
+
+            $newUser->attachRole($adminRole);
+            foreach ($permissions as $permission) {
+                $newUser->attachPermission($permission);
+            }
+        }
     }
 }
