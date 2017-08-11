@@ -12,9 +12,13 @@ use jeremykenedy\LaravelRoles\Models\Role;
 class RoleController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
-        return Role::all();
+        return Role::where(function ($query) use ($request) {
+            if ($request->has('slug')) {
+                $query->where('slug', 'like', '%' . $request->slug . '%');
+            }
+        })->get();
     }
 
     public function store(Request $request)
@@ -23,9 +27,9 @@ class RoleController extends Controller
         Validator::make($data, [
             'name' => 'required|unique:roles|max:50',
             'slug' => 'required|unique:roles|max:150',
-            'description' => 'required|max:150',
+            'description' => 'nullable|max:150',
             'level' => 'integer',
-        ])->validate();
+        ], [], $this->attributes())->validate();
 
         return Role::create($data);
     }
@@ -40,10 +44,10 @@ class RoleController extends Controller
         $data = $request->all();
         Validator::make($data, [
             'name' => ['required_without_all:slug,description,level', 'max:150', Rule::unique('roles')->ignore($role->id)],
-            'slug' => 'required|unique:roles|max:150',
+            'slug' => 'unique:roles|max:150',
             'description' => 'nullable|max:150',
             'level' => 'integer',
-        ])->validate();
+        ], [], $this->attributes())->validate();
 
         $role->update($data);
         return $role;
@@ -69,5 +73,12 @@ class RoleController extends Controller
     public function permissionList()
     {
         return Permission::all();
+    }
+
+    protected function attributes()
+    {
+        return [
+            'slug' => '检测词', 'level' => '层级'
+        ];
     }
 }
