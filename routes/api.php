@@ -22,7 +22,10 @@ Route::group(['namespace' => 'Api\Admin', 'prefix' => 'admin'], function () {
         Route::get('role/permissions/{role}', 'RoleController@rolePermissions');
         Route::patch('role/syncPermissions/{role}', 'RoleController@syncPermissions');
 
-        Route::get('permission', 'RoleController@permissionList');
+        Route::get('permission', 'PermissionController@index');
+        Route::post('permission', 'PermissionController@store');
+        Route::delete('permission/{permission}', 'PermissionController@destroy');
+        Route::patch('permission/{permission}', 'PermissionController@update');
 
         Route::get('user', 'UserController@index');
         Route::post('user', 'UserController@store');

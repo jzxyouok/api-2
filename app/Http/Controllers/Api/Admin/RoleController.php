@@ -44,7 +44,7 @@ class RoleController extends Controller
         $data = $request->all();
         Validator::make($data, [
             'name' => ['required_without_all:slug,description,level', 'max:150', Rule::unique('roles')->ignore($role->id)],
-            'slug' => 'unique:roles|max:150',
+            'slug' => ['max:150', Rule::unique('roles')->ignore($role->id)],
             'description' => 'nullable|max:150',
             'level' => 'integer',
         ], [], $this->attributes())->validate();
@@ -68,11 +68,6 @@ class RoleController extends Controller
 
         $role->syncPermissions($permissions);
         return $role->permissions;
-    }
-
-    public function permissionList()
-    {
-        return Permission::all();
     }
 
     protected function attributes()
