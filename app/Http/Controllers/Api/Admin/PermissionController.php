@@ -30,7 +30,7 @@ class PermissionController extends Controller
             'model' => 'nullable|max:50',
         ], [], $this->attributes())->validate();
 
-        return Role::create($data);
+        return Permission::create($data);
     }
 
     public function update(Request $request, Permission $permission)
