@@ -16,45 +16,12 @@ class PermissionsTableSeeder extends Seeder
     public function run()
     {
 
-	    /**
-	     * Add Permissions
-	     *
-	     */
-        if (Permission::where('name', '=', 'Can View Users')->first() === null) {
-			Permission::create([
-			    'name' => 'Can View Users',
-			    'slug' => 'view.users',
-			    'description' => 'Can view users',
-			    'model' => 'Permission',
-			]);
-        }
+        $arr = [
+            ['name' => '角色管理', 'slug' => 'all.role', 'description' => '可以对角色进行任何操作', 'model' => 'Role'],
+            ['name' => '权限管理', 'slug' => 'all.permission', 'description' => '可以对权限进行任何操作', 'model' => 'Permission'],
+            ['name' => '账户管理', 'slug' => 'all.user', 'description' => '可以对账户进行任何操作', 'model' => 'User']
+        ];
 
-        if (Permission::where('name', '=', 'Can Create Users')->first() === null) {
-			Permission::create([
-			    'name' => 'Can Create Users',
-			    'slug' => 'create.users',
-			    'description' => 'Can create new users',
-			    'model' => 'Permission',
-			]);
-        }
-
-        if (Permission::where('name', '=', 'Can Edit Users')->first() === null) {
-			Permission::create([
-			    'name' => 'Can Edit Users',
-			    'slug' => 'edit.users',
-			    'description' => 'Can edit users',
-			    'model' => 'Permission',
-			]);
-        }
-
-        if (Permission::where('name', '=', 'Can Delete Users')->first() === null) {
-			Permission::create([
-			    'name' => 'Can Delete Users',
-			    'slug' => 'delete.users',
-			    'description' => 'Can delete users',
-			    'model' => 'Permission',
-			]);
-        }
-
+        Permission::insert($arr);
     }
 }

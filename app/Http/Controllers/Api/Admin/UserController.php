@@ -31,11 +31,6 @@ class UserController extends Controller
         return User::create($arr);
     }
 
-    public function show(User $user)
-    {
-        return $user;
-    }
-
     public function update(Request $request, User $user)
     {
         $data = $request->except('disable_at');
@@ -99,15 +94,4 @@ class UserController extends Controller
         return $user->roles;
     }
 
-    /**
-     * @desc 返回当前用户所有的权限
-     * @desc 逻辑为从权限列表后，js循环前端路由匹配权限列表，如权限列表中不存在，就将循环到的路由删除即可。
-     * @param Request $request
-     * @return mixed
-     */
-    public function permissionList(Request $request)
-    {
-        $user = $request->user();
-        return $user->getPermissions();
-    }
 }

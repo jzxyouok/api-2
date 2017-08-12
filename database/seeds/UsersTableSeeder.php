@@ -15,8 +15,8 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        $userRole = Role::where('name', '=', 'User')->first();
-        $adminRole = Role::where('name', '=', 'Admin')->first();
+        $userRole = Role::where('name', 'User')->first();
+        $adminRole = Role::where('name', 'Admin')->first();
         $permissions = Permission::all();
 
         /**
@@ -26,6 +26,7 @@ class UsersTableSeeder extends Seeder
         if (User::where('email', '=', '676659348@qq.com')->first() === null) {
 
             $newUser = User::create([
+                'avatar' => 'https://cn.vuejs.org/images/logo.png',
                 'name' => 'bing',
                 'email' => '676659348@qq.com',
                 'password' => bcrypt('bing8u'),
@@ -42,6 +43,7 @@ class UsersTableSeeder extends Seeder
         if (User::where('email', '=', '953547161@qq.com')->first() === null) {
 
             $newUser = User::create([
+                'avatar' => 'https://cn.vuejs.org/images/xiaozhuanlan.png',
                 'name' => 'liyanchun',
                 'email' => '953547161@qq.com',
                 'password' => bcrypt('lyc123'),

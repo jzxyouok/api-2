@@ -13,31 +13,28 @@ Route::group(['namespace' => 'Api\Admin', 'prefix' => 'admin'], function () {
 
     // 登录保护
     Route::group(['middleware' => ['auth:api']], function () {
+
+        // 登录用户可查看的，不需要权限控制
         Route::get('sysInfo', 'InfoController');
-
-        Route::get('role', 'RoleController@index');
-        Route::post('role', 'RoleController@store');
-        Route::delete('role/{role}', 'RoleController@destroy');
-        Route::patch('role/{role}', 'RoleController@update');
-        Route::get('role/permissions/{role}', 'RoleController@rolePermissions');
-        Route::patch('role/syncPermissions/{role}', 'RoleController@syncPermissions');
-
-        Route::get('permission', 'PermissionController@index');
-        Route::post('permission', 'PermissionController@store');
-        Route::delete('permission/{permission}', 'PermissionController@destroy');
-        Route::patch('permission/{permission}', 'PermissionController@update');
-
-        Route::get('user', 'UserController@index');
-        Route::post('user', 'UserController@store');
-        Route::delete('user/{user}', 'UserController@destroy');
-        Route::patch('user/{user}', 'UserController@update');
-        Route::get('user/{user}', 'UserController@show');
-
         Route::patch('user/update/myInfo', 'UserController@updateMyInfo');
 
-        Route::patch('user/syncRoles/{user}', 'UserController@syncRoles');
+        Route::get('role', 'RoleController@index')->middleware('permission:all.role');
+        Route::post('role', 'RoleController@store')->middleware('permission:all.role');
+        Route::delete('role/{role}', 'RoleController@destroy')->middleware('permission:all.role');
+        Route::patch('role/{role}', 'RoleController@update')->middleware('permission:all.role');
+        Route::get('role/permissions/{role}', 'RoleController@rolePermissions')->middleware('permission:all.role');
+        Route::patch('role/syncPermissions/{role}', 'RoleController@syncPermissions')->middleware('permission:all.role');
 
-        Route::get('user/permission/list', 'UserController@permissionList');
+        Route::get('permission', 'PermissionController@index')->middleware('permission:all.permission');
+        Route::post('permission', 'PermissionController@store')->middleware('permission:all.permission');
+        Route::delete('permission/{permission}', 'PermissionController@destroy')->middleware('permission:all.permission');
+        Route::patch('permission/{permission}', 'PermissionController@update')->middleware('permission:all.permission');
+
+        Route::get('user', 'UserController@index')->middleware('permission:all.user');
+        Route::post('user', 'UserController@store')->middleware('permission:all.user');
+        Route::delete('user/{user}', 'UserController@destroy')->middleware('permission:all.user');
+        Route::patch('user/{user}', 'UserController@update')->middleware('permission:all.user');
+        Route::patch('user/syncRoles/{user}', 'UserController@syncRoles')->middleware('permission:all.user');
     });
 });
 
