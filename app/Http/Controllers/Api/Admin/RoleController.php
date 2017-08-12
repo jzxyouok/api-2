@@ -34,9 +34,9 @@ class RoleController extends Controller
         return Role::create($data);
     }
 
-    public function show(Role $role)
+    public function rolePermissions(Role $role)
     {
-        return Role::with('permissions', 'users')->find($role->id);
+        return $role->permissions;
     }
 
     public function update(Request $request, Role $role)
