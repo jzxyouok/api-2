@@ -22,6 +22,9 @@ class PermissionsTableSeeder extends Seeder
             ['name' => '账户管理', 'slug' => 'all.user', 'description' => '可以对账户进行任何操作', 'model' => 'User']
         ];
 
-        Permission::insert($arr);
+        foreach ($arr as $item) {
+            Permission::create($item);
+        }
+
     }
 }
