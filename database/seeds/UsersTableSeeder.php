@@ -15,7 +15,6 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        $userRole = Role::where('name', 'User')->first();
         $adminRole = Role::where('name', 'Admin')->first();
         $permissions = Permission::all();
 
