@@ -55,7 +55,7 @@ class UserController extends Controller
 
     public function update(Request $request, User $user)
     {
-        $data = $request->except('disable_at');
+        $data = $request->except('disable_at', 'api_token');
         Validator::make($data, [
             'name' => ['required_without_all:email,disable,avatar', 'between:3,15', Rule::unique('users')->ignore($user->id)],
             'email' => ['email', 'between:6,30', Rule::unique('users')->ignore($user->id)],
