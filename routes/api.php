@@ -18,19 +18,19 @@ Route::group(['namespace' => 'Api\Admin', 'prefix' => 'admin'], function () {
         Route::get('sysInfo', 'InfoController');
         Route::patch('user/update/myInfo', 'UserController@updateMyInfo');
 
-        Route::get('role', 'RoleController@index')->middleware('permission:all.role');
+        Route::get('role', 'RoleController@index');
         Route::post('role', 'RoleController@store')->middleware('permission:all.role');
         Route::delete('role/{role}', 'RoleController@destroy')->middleware('permission:all.role');
         Route::patch('role/{role}', 'RoleController@update')->middleware('permission:all.role');
         Route::get('role/permissions/{role}', 'RoleController@rolePermissions')->middleware('permission:all.role');
         Route::patch('role/syncPermissions/{role}', 'RoleController@syncPermissions')->middleware('permission:all.role');
 
-        Route::get('permission', 'PermissionController@index')->middleware('permission:all.permission');
+        Route::get('permission', 'PermissionController@index');
         Route::post('permission', 'PermissionController@store')->middleware('permission:all.permission');
         Route::delete('permission/{permission}', 'PermissionController@destroy')->middleware('permission:all.permission');
         Route::patch('permission/{permission}', 'PermissionController@update')->middleware('permission:all.permission');
 
-        Route::get('user', 'UserController@index')->middleware('permission:all.user');
+        Route::get('user', 'UserController@index');
         Route::post('user', 'UserController@store')->middleware('permission:all.user');
         Route::delete('user/{user}', 'UserController@destroy')->middleware('permission:all.user');
         Route::patch('user/{user}', 'UserController@update')->middleware('permission:all.user');

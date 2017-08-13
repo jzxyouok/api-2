@@ -28,12 +28,12 @@ class UserController extends Controller
         $data = $request->all();
         Validator::make($data, [
             'name' => 'required|unique:users|between:3,15',
-            'email' => 'required|email|unique:users,between:6,30',
-            'password' => 'required|between:6,15',
+            'email' => 'required|email|unique:users|between:6,30',
+            'password' => 'between:6,15',
             'disable' => 'in:T,F',
-            'avatar' => 'between:6,255',
+            'avatar' => 'nullable|between:6,255',
             'roles' => 'array',
-        ])->validate();
+        ], [], $this->attributes())->validate();
 
         if ($request->has('disable')) {
             $data['disable_at'] = $data['disable'] === 'T' ? Carbon::now() : null;
@@ -57,16 +57,12 @@ class UserController extends Controller
     {
         $data = $request->except('disable_at');
         Validator::make($data, [
-            'name' => ['required_without_all:email,password,disable,avatar', 'between:3,15', Rule::unique('users')->ignore($user->id)],
+            'name' => ['required_without_all:email,disable,avatar', 'between:3,15', Rule::unique('users')->ignore($user->id)],
             'email' => ['email', 'between:6,30', Rule::unique('users')->ignore($user->id)],
-            'password' => 'between:6,15',
             'disable' => 'in:T,F',
-            'avatar' => 'between:6,255',
-        ])->validate();
+            'avatar' => 'nullable|between:6,255',
+        ], [], $this->attributes())->validate();
 
-        if ($request->has('password')) {
-            $data['password'] = bcrypt($data['password']);
-        }
         if ($request->has('disable')) {
             $data['disable_at'] = $data['disable'] === 'T' ? Carbon::now() : null;
         }
@@ -117,11 +113,15 @@ class UserController extends Controller
         Validator::make($request->all(), [
             'roles' => 'array',
         ])->validate();
-
         $roles = Role::find($request->get('roles'));
-
         $user->syncRoles($roles);
         return $user->roles;
     }
 
+    protected function attributes()
+    {
+        return [
+            'disable' => '状态', 'avatar' => '头像', 'roles' => '角色组'
+        ];
+    }
 }
