@@ -13,9 +13,14 @@ use jeremykenedy\LaravelRoles\Models\Role;
 class UserController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
-        return User::all();
+        return User::with('roles')->where(function ($query) use ($request) {
+            if ($request->has('keyword')) {
+                $keyword = $request->get('keyword');
+                $query->where('name', 'like', '%' . $keyword . '%')->orWhere('email', 'like', '%' . $keyword . '%');
+            }
+        })->paginate($request->pageSize);
     }
 
     public function store(Request $request)
@@ -25,10 +30,27 @@ class UserController extends Controller
             'name' => 'required|unique:users|between:3,15',
             'email' => 'required|email|unique:users,between:6,30',
             'password' => 'required|between:6,15',
+            'disable' => 'in:T,F',
             'avatar' => 'between:6,255',
+            'roles' => 'array',
         ])->validate();
-        $arr = array_merge($data, ['api_token' => str_random(60), 'password' => bcrypt($data['password'])]);
-        return User::create($arr);
+
+        if ($request->has('disable')) {
+            $data['disable_at'] = $data['disable'] === 'T' ? Carbon::now() : null;
+        }
+
+        $data['api_token'] = str_random(60);
+        $data['password'] = bcrypt($data['password']);
+
+        $user = User::create($data);
+
+        if ($request->has('roles')) {
+            $roles = Role::find($request->get('roles'));
+
+            $user->syncRoles($roles);
+        }
+
+        return $user;
     }
 
     public function update(Request $request, User $user)
@@ -51,6 +73,14 @@ class UserController extends Controller
 
         $user->update($data);
         return $user;
+    }
+
+    public function resetPassword(User $user)
+    {
+        $pwd = str_random(6);
+        $user->password = bcrypt($pwd);
+        $user->save();
+        return $pwd;
     }
 
     public function destroy(User $user)

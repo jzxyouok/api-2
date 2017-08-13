@@ -35,6 +35,7 @@ Route::group(['namespace' => 'Api\Admin', 'prefix' => 'admin'], function () {
         Route::delete('user/{user}', 'UserController@destroy')->middleware('permission:all.user');
         Route::patch('user/{user}', 'UserController@update')->middleware('permission:all.user');
         Route::patch('user/syncRoles/{user}', 'UserController@syncRoles')->middleware('permission:all.user');
+        Route::patch('user/resetPassword/{user}', 'UserController@resetPassword')->middleware('permission:all.user');
     });
 });
 
