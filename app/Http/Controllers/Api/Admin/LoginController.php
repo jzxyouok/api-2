@@ -18,7 +18,7 @@ class LoginController extends Controller
 
     public function logout(Request $request)
     {
-        $user = $this->guard()->user();
+        $user = $request->user();
         $user->api_token = str_random(60);
         $user->save();
         return response()->json(['msg' => trans('auth.logout')]);
