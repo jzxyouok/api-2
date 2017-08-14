@@ -6,6 +6,7 @@ use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use jeremykenedy\LaravelRoles\Models\Role;
@@ -91,15 +92,39 @@ class UserController extends Controller
      */
     public function updateMyInfo(Request $request)
     {
-        $user = $request->user();
-        $data = $request->intersect('avatar', 'password');
+        $data = $request->intersect('avatar', 'oldPassword', 'newPassword');
 
-        if ($request->has('password')) {
-            $data['password'] = bcrypt($data['password']);
+        Validator::make($data, [
+            'oldPassword' => 'required_with:newPassword|between:6,30',
+            'newPassword' => 'between:6,30',
+            'avatar' => 'required_without_all:oldPassword,newPassword|between:6,255',
+        ], [], $this->attributes())->validate();
+
+        $user = $request->user();
+
+        if ($request->has('newPassword')) {
+            if (!Hash::check($request->oldPassword, $user->password)) {
+                return response('旧密码输入错误', 422);
+            }
+            if (Hash::check($request->newPassword, $user->password)) {
+                return response('旧密码与新密码相同', 422);
+            }
+
+            $data['password'] = bcrypt($data['newPassword']);
         }
 
         $user->update($data);
         return $user;
+    }
+
+    /**
+     * 当前用户的角色
+     * @param Request $request
+     * @return mixed
+     */
+    public function myRoles(Request $request)
+    {
+        return $request->user()->roles;
     }
 
     /**
@@ -121,7 +146,7 @@ class UserController extends Controller
     protected function attributes()
     {
         return [
-            'disable' => '状态', 'avatar' => '头像', 'roles' => '角色组'
+            'disable' => '状态', 'avatar' => '头像', 'roles' => '角色组', 'oldPassword' => '旧密码', 'newPassword' => '新密码'
         ];
     }
 }

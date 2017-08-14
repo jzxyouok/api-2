@@ -17,6 +17,7 @@ Route::group(['namespace' => 'Api\Admin', 'prefix' => 'admin'], function () {
         Route::post('logout', 'LoginController@logout');
         Route::get('sysInfo', 'InfoController');
         Route::patch('user/update/myInfo', 'UserController@updateMyInfo');
+        Route::get('user/myRoles', 'UserController@myRoles');
 
         Route::get('role', 'RoleController@index');
         Route::post('role', 'RoleController@store')->middleware('permission:all.role');
