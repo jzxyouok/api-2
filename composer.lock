@@ -141,33 +141,33 @@
         },
         {
             "name": "doctrine/inflector",
-            "version": "v1.1.0",
+            "version": "v1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/inflector.git",
-                "reference": "90b2128806bfde671b6952ab8bea493942c1fdae"
+                "reference": "e11d84c6e018beedd929cff5220969a3c6d1d462"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/doctrine/inflector/90b2128806bfde671b6952ab8bea493942c1fdae.zip",
-                "reference": "90b2128806bfde671b6952ab8bea493942c1fdae",
+                "url": "https://files.phpcomposer.com/files/doctrine/inflector/e11d84c6e018beedd929cff5220969a3c6d1d462.zip",
+                "reference": "e11d84c6e018beedd929cff5220969a3c6d1d462",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.2"
+                "php": "^7.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "4.*"
+                "phpunit/phpunit": "^6.2"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.1.x-dev"
+                    "dev-master": "1.2.x-dev"
                 }
             },
             "autoload": {
-                "psr-0": {
-                    "Doctrine\\Common\\Inflector\\": "lib/"
+                "psr-4": {
+                    "Doctrine\\Common\\Inflector\\": "lib/Doctrine/Common/Inflector"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -204,7 +204,7 @@
                 "singularize",
                 "string"
             ],
-            "time": "2015-11-06T14:35:42+00:00"
+            "time": "2017-07-22T12:18:28+00:00"
         },
         {
             "name": "erusev/parsedown",
@@ -633,20 +633,20 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v5.4.32",
+            "version": "v5.4.33",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "b8300578d159199b1195413b67318c79068cd24d"
+                "reference": "e53a81a2bf406f501cdf818ad949f8d6c8dabfc0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/laravel/framework/b8300578d159199b1195413b67318c79068cd24d.zip",
-                "reference": "b8300578d159199b1195413b67318c79068cd24d",
+                "url": "https://files.phpcomposer.com/files/laravel/framework/e53a81a2bf406f501cdf818ad949f8d6c8dabfc0.zip",
+                "reference": "e53a81a2bf406f501cdf818ad949f8d6c8dabfc0",
                 "shasum": ""
             },
             "require": {
-                "doctrine/inflector": "~1.1.0",
+                "doctrine/inflector": "~1.1",
                 "erusev/parsedown": "~1.6",
                 "ext-mbstring": "*",
                 "ext-openssl": "*",
@@ -758,7 +758,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2017-08-03T12:59:42+00:00"
+            "time": "2017-08-14T20:17:41+00:00"
         },
         {
             "name": "laravel/tinker",
@@ -1134,22 +1134,29 @@
         },
         {
             "name": "overtrue/laravel-lang",
-            "version": "3.0.4",
+            "version": "3.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/overtrue/laravel-lang.git",
-                "reference": "c980eba644dd78f470f186afc1a6327167b02e1f"
+                "reference": "914fc271b5040621daabac49ac422909bae1936f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/overtrue/laravel-lang/c980eba644dd78f470f186afc1a6327167b02e1f.zip",
-                "reference": "c980eba644dd78f470f186afc1a6327167b02e1f",
+                "url": "https://files.phpcomposer.com/files/overtrue/laravel-lang/914fc271b5040621daabac49ac422909bae1936f.zip",
+                "reference": "914fc271b5040621daabac49ac422909bae1936f",
                 "shasum": ""
             },
             "require": {
                 "caouecs/laravel-lang": "~3.0"
             },
             "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Overtrue\\LaravelLang\\TranslationServiceProvider"
+                    ]
+                }
+            },
             "autoload": {
                 "psr-4": {
                     "Overtrue\\LaravelLang\\": "src/"
@@ -1174,7 +1181,7 @@
                 "laravel",
                 "overtrue"
             ],
-            "time": "2017-05-10T12:49:48+00:00"
+            "time": "2017-07-31T02:22:53+00:00"
         },
         {
             "name": "paragonie/random_compat",

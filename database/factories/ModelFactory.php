@@ -25,3 +25,20 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
         'disable_at' => null,
     ];
 });
+
+$factory->define(App\Attachment::class, function () {
+    $faker = Faker\Factory::create('zh_CN');
+
+    $arrDirIds = \App\AttDir::get()->pluck('id');
+    $userIds = \App\User::get()->pluck('id');
+
+    return [
+        'dir_id' => $faker->randomElement($arrDirIds->toArray()),
+        'user_id' => $faker->randomElement($userIds->toArray()),
+        'title' => $faker->sentence,
+        'md5_file' => str_random(32),
+        'file_size' => $faker->numberBetween(1024, 1024 * 1024),
+        'path' => $faker->imageUrl(),
+        'is_image' => 'T'
+    ];
+});
