@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Attachment;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class AttachmentController extends Controller
 {
@@ -27,17 +29,33 @@ class AttachmentController extends Controller
             if ($request->has('disk')) {
                 $query->where('disk', $request->disk);
             }
-        })->paginate($request->pageSize);
+        })->latest()->paginate($request->pageSize);
     }
 
-    public function create()
-    {
-        //
-    }
 
     public function store(Request $request)
     {
-        //
+        $arr = $request->all();
+        Validator::make($arr, [
+            'dir_id' => 'required|integer|exists:attdirs,id',
+            'is_image' => 'required|in:T,F',
+            'disk' => 'in:public,local',
+            'file' => 'required|file',
+        ], [], $this->attributes())->validate();
+
+        $disk = $request->get('disk', 'public');
+        $file = $request->file('file');
+        $path = $file->store(date('Ymd'), $disk);
+
+        $data = array_merge($arr, [
+            'user_id' => $request->user()->id,
+            'name' => $file->getClientOriginalName(),
+            'file_size' => $file->getSize(),
+            'path' => $path,
+            'url' => Storage::disk($disk)->url($path),
+            'disk' => $disk
+        ]);
+        return Attachment::create($data);
     }
 
     public function show(Attachment $attachment)
@@ -45,18 +63,18 @@ class AttachmentController extends Controller
         //
     }
 
-    public function edit(Attachment $attachment)
-    {
-        //
-    }
-
-    public function update(Request $request, Attachment $attachment)
-    {
-        //
-    }
-
     public function destroy(Attachment $attachment)
     {
-        //
+        if (Storage::disk($attachment->disk)->exists($attachment->path)) {
+            Storage::disk($attachment->disk)->delete($attachment->path);
+        }
+        return ['msg' => $attachment->delete() ? 'delete success' : 'delete fail'];
+    }
+
+    protected function attributes()
+    {
+        return [
+            'dir_id' => '目录', 'is_image' => '是否图片', 'disk' => '磁盘',
+        ];
     }
 }

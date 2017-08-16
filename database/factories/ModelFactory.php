@@ -26,19 +26,18 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(App\Attachment::class, function () {
-    $faker = Faker\Factory::create('zh_CN');
-
+$factory->define(App\Attachment::class, function (Faker\Generator $faker) {
     $arrDirIds = \App\AttDir::get()->pluck('id');
     $userIds = \App\User::get()->pluck('id');
 
+    $url = $faker->imageUrl();
     return [
         'dir_id' => $faker->randomElement($arrDirIds->toArray()),
         'user_id' => $faker->randomElement($userIds->toArray()),
-        'title' => $faker->sentence,
-        'md5_file' => str_random(32),
+        'name' => $faker->sentence,
         'file_size' => $faker->numberBetween(1024, 1024 * 1024),
-        'path' => $faker->imageUrl(),
+        'path' => $url,
+        'url' => $url,
         'is_image' => 'T'
     ];
 });

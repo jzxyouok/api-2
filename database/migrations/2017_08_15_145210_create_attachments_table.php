@@ -27,10 +27,10 @@ class CreateAttachmentsTable extends Migration
             $table->foreign('dir_id')->references('id')->on('attDirs')->onDelete('cascade');
             $table->integer('user_id')->unsigned()->index();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->string('title');
-            $table->string('md5_file');
+            $table->string('name');
             $table->integer('file_size')->unsigned();
             $table->string('path', 255);
+            $table->string('url', 255);
             $table->enum('is_image', ['T', 'F']);
             $table->string('disk')->default('public');
             $table->timestamps();

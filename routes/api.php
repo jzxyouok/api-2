@@ -39,8 +39,13 @@ Route::group(['namespace' => 'Api\Admin', 'prefix' => 'admin'], function () {
         Route::patch('user/resetPassword/{user}', 'UserController@resetPassword')->middleware('permission:all.user');
 
         Route::get('attDir', 'AttDirController@index');
+        Route::post('attDir', 'AttDirController@store');
+        Route::delete('attDir/{attDir}', 'AttDirController@destroy');
+        Route::patch('attDir/{attDir}', 'AttDirController@update');
 
         Route::get('attachment', 'AttachmentController@index');
+        Route::post('attachment', 'AttachmentController@store');
+        Route::delete('attachment/{attachment}', 'AttachmentController@destroy');
     });
 });
 

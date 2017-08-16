@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Attachment extends Model
 {
     protected $fillable = [
-        'dir_id', 'user_id', 'title', 'md5_file', 'file_size', 'path', 'is_image', 'disk'
+        'dir_id', 'user_id', 'name', 'file_size', 'path', 'url', 'is_image', 'disk'
     ];
 
     public function getIsImageAttribute()
