@@ -17,7 +17,6 @@ class CreateAttachmentsTable extends Migration
             $table->increments('id')->unsigned();
             $table->string('title');
             $table->integer('parent_id')->unsigned()->default(0);
-            $table->enum('is_sys', ['T', 'F'])->default('F');
             $table->timestamps();
         });
 

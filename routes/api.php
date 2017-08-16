@@ -1,11 +1,4 @@
 <?php
-/*
-use Illuminate\Http\Request;
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});*/
-
-//use Illuminate\Support\Facades\Storage;
 
 Route::group(['namespace' => 'Api\Admin', 'prefix' => 'admin'], function () {
     Route::post('login', 'LoginController@login');
@@ -38,31 +31,13 @@ Route::group(['namespace' => 'Api\Admin', 'prefix' => 'admin'], function () {
         Route::patch('user/syncRoles/{user}', 'UserController@syncRoles')->middleware('permission:all.user');
         Route::patch('user/resetPassword/{user}', 'UserController@resetPassword')->middleware('permission:all.user');
 
-        Route::get('attDir', 'AttDirController@index');
-        Route::post('attDir', 'AttDirController@store');
-        Route::delete('attDir/{attDir}', 'AttDirController@destroy');
-        Route::patch('attDir/{attDir}', 'AttDirController@update');
+        Route::get('attDir', 'AttDirController@index')->middleware('permission:all.attachment');
+        Route::post('attDir', 'AttDirController@store')->middleware('permission:all.attachment');
+        Route::delete('attDir/{attDir}', 'AttDirController@destroy')->middleware('permission:all.attachment');
+        Route::patch('attDir/{attDir}', 'AttDirController@update')->middleware('permission:all.attachment');
 
-        Route::get('attachment', 'AttachmentController@index');
-        Route::post('attachment', 'AttachmentController@store');
-        Route::delete('attachment/{attachment}', 'AttachmentController@destroy');
+        Route::get('attachment', 'AttachmentController@index')->middleware('permission:all.attachment');
+        Route::post('attachment', 'AttachmentController@store')->middleware('permission:all.attachment');
+        Route::delete('attachment/{attachment}', 'AttachmentController@destroy')->middleware('permission:all.attachment');
     });
 });
-
-/*Route::post('upload', function (\Illuminate\Http\Request $request) {
-    if ($request->hasFile('file')) {
-        $disk = 'public';
-        $path = $request->file('file')->store('avatars', $disk);
-        return ['url' => Storage::url($path), 'path' => $path, 'disk' => $disk];
-    }
-    return response('file does not exist', 502);
-});
-
-Route::delete('file/del', function (\Illuminate\Http\Request $request) {
-    $fileUrl = $request->get('fileUrl');
-    $disk = $request->get('disk', 'public');
-    if (Storage::disk($disk)->exists($fileUrl)) {
-        return Storage::disk($disk)->delete($fileUrl) ? 'file delete success' : response('file delete fail', 502);
-    }
-    return response('file does not exist', 502);
-});*/

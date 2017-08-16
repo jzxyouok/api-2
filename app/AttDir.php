@@ -9,13 +9,8 @@ class AttDir extends Model
     protected $table = 'attdirs';
 
     protected $fillable = [
-        'title', 'parent_id', 'is_sys',
+        'title', 'parent_id'
     ];
-
-    public function getIsSysAttribute()
-    {
-        return $this->attributes['is_sys'] == 'T';
-    }
 
     public function attachments()
     {
