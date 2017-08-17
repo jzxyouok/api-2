@@ -63,18 +63,29 @@ class AttachmentController extends Controller
         //
     }
 
-    public function destroy(Attachment $attachment)
+    public function destroy(Request $request)
     {
-        if (Storage::disk($attachment->disk)->exists($attachment->path)) {
-            Storage::disk($attachment->disk)->delete($attachment->path);
+        Validator::make($request->only('ids'), [
+            'ids' => 'required|array',
+        ], [], $this->attributes())->validate();
+
+        $atts = Attachment::find($request->get('ids'));
+
+        foreach ($atts as $att) {
+            if (Storage::disk($att->disk)->exists($att->path)) {
+                Storage::disk($att->disk)->delete($att->path);
+            }
+            $att->delete();
         }
-        return ['msg' => $attachment->delete() ? 'delete success' : 'delete fail'];
+
+        return 'delete success';
     }
 
     protected function attributes()
     {
         return [
-            'dir_id' => '目录', 'is_image' => '是否图片', 'disk' => '磁盘',
+            'dir_id' => '目录', 'is_image' => '是否图片', 'disk' => '磁盘', 'ids' => '附件ID集合'
         ];
     }
+
 }
