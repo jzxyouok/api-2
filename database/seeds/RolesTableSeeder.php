@@ -22,6 +22,10 @@ class RolesTableSeeder extends Seeder
             ['name' => 'Unverified', 'slug' => 'unverified', 'description' => 'Unverified Role', 'level' => 0]
         ];
 
+        if (!!Role::count()) {
+            return true;
+        }
+
         foreach ($arr as $item) {
             Role::create($item);
         }

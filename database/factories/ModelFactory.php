@@ -26,6 +26,15 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
     ];
 });
 
+$factory->define(App\AttDir::class, function (Faker\Generator $faker) {
+    $arrDirIds = \App\AttDir::get()->pluck('id');
+    return [
+        'title' => $faker->sentence,
+        'parent_id' => $faker->randomElement($arrDirIds->toArray()),
+        'is_sys' => 'F',
+    ];
+});
+
 $factory->define(App\Attachment::class, function (Faker\Generator $faker) {
     $arrDirIds = \App\AttDir::get()->pluck('id');
     $userIds = \App\User::get()->pluck('id');

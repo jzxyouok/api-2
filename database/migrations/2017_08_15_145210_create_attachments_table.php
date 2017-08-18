@@ -17,6 +17,7 @@ class CreateAttachmentsTable extends Migration
             $table->increments('id')->unsigned();
             $table->string('title');
             $table->integer('parent_id')->unsigned()->default(0);
+            $table->enum('is_sys', ['T', 'F'])->default('F');
             $table->timestamps();
         });
 
@@ -30,7 +31,7 @@ class CreateAttachmentsTable extends Migration
             $table->integer('file_size')->unsigned();
             $table->string('path', 255);
             $table->string('url', 255);
-            $table->enum('is_image', ['T', 'F']);
+            $table->enum('is_image', ['T', 'F'])->default('F');
             $table->string('disk')->default('public');
             $table->timestamps();
         });

@@ -12,7 +12,7 @@ class AttDirController extends Controller
 
     public function index(Request $request)
     {
-        return AttDir::with('allChildren')->where('parent_id', 0)->get();
+        return AttDir::with('allChildren')->where(['parent_id' => 0, 'is_sys' => 'F'])->get();
     }
 
     public function store(Request $request)
@@ -40,7 +40,10 @@ class AttDirController extends Controller
     public function destroy(AttDir $attDir)
     {
         if (count($attDir->children)) {
-            return response('必须先删除子文件夹', 422);
+            return response('必须先删除子文件夹。', 422);
+        }
+        if ($attDir->isSystem) {
+            return response('系统目录，不可删除。', 422);
         }
         return $attDir->delete() ? 'success' : response('delete folder fail', 422);
     }

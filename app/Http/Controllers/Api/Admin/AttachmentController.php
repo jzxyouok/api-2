@@ -58,11 +58,6 @@ class AttachmentController extends Controller
         return Attachment::create($data);
     }
 
-    public function show(Attachment $attachment)
-    {
-        //
-    }
-
     public function destroy(Request $request)
     {
         Validator::make($request->only('ids'), [
