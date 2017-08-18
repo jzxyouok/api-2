@@ -12,7 +12,7 @@ class AttDirController extends Controller
 
     public function index(Request $request)
     {
-        return AttDir::with('allChildren')->where(['parent_id' => 0, 'is_sys' => 'F'])->get();
+        return AttDir::with('allChildren')->where(['parent_id' => 0])->get();
     }
 
     public function store(Request $request)

@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use jeremykenedy\LaravelRoles\Models\Role;
@@ -92,28 +93,32 @@ class UserController extends Controller
      */
     public function updateMyInfo(Request $request)
     {
-        $data = $request->intersect('avatar', 'oldPassword', 'newPassword');
-
-        Validator::make($data, [
+        Validator::make($request->all(), [
             'oldPassword' => 'required_with:newPassword|between:6,30',
             'newPassword' => 'between:6,30',
-            'avatar' => 'required_without_all:oldPassword,newPassword|between:6,255',
+            'avatar' => 'image',
         ], [], $this->attributes())->validate();
 
         $user = $request->user();
 
         if ($request->has('newPassword')) {
             if (!Hash::check($request->oldPassword, $user->password)) {
-                return response('旧密码输入错误', 422);
+                return response('旧密码输入错误。', 422);
             }
             if (Hash::check($request->newPassword, $user->password)) {
-                return response('旧密码与新密码相同', 422);
+                return response('旧密码与新密码相同。', 422);
             }
 
-            $data['password'] = bcrypt($data['newPassword']);
+            $user->password = bcrypt($request->newPassword);
         }
 
-        $user->update($data);
+        if ($request->hasFile('avatar')) {
+            $file = $request->file('avatar');
+            $path = $file->storeAs('avatars', $user->id . '.' . $file->getClientOriginalExtension(), ['disk' => 'public']);
+            $user->avatar = Storage::disk('public')->url($path);
+        }
+
+        $user->save();
         return $user;
     }
 

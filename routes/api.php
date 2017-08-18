@@ -9,7 +9,7 @@ Route::group(['namespace' => 'Api\Admin', 'prefix' => 'admin'], function () {
         // 登录用户可查看的，不需要权限控制
         Route::post('logout', 'LoginController@logout');
         Route::get('sysInfo', 'InfoController');
-        Route::patch('user/update/myInfo', 'UserController@updateMyInfo');
+        Route::post('user/update/myInfo', 'UserController@updateMyInfo');
         Route::get('user/myRoles', 'UserController@myRoles');
 
         Route::get('role', 'RoleController@index');
