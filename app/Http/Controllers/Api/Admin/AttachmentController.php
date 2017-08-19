@@ -29,7 +29,7 @@ class AttachmentController extends Controller
             if ($request->has('disk')) {
                 $query->where('disk', $request->disk);
             }
-        })->latest()->paginate($request->pageSize);
+        })->latest()->paginate($request->per_page);
     }
 
 

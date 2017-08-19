@@ -22,7 +22,7 @@ class UserController extends Controller
                 $keyword = $request->get('keyword');
                 $query->where('name', 'like', '%' . $keyword . '%')->orWhere('email', 'like', '%' . $keyword . '%');
             }
-        })->paginate($request->pageSize);
+        })->paginate($request->per_page);
     }
 
     public function store(Request $request)
