@@ -24,6 +24,7 @@ class AttDirController extends Controller
             'parent_id' => 'integer',
         ], [], $this->attributes())->validate();
 
+
         return AttDir::create($data);
     }
 

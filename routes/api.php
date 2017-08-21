@@ -39,5 +39,13 @@ Route::group(['namespace' => 'Api\Admin', 'prefix' => 'admin'], function () {
         Route::get('attachment', 'AttachmentController@index')->middleware('permission:all.attachment');
         Route::post('attachment', 'AttachmentController@store')->middleware('permission:all.attachment');
         Route::delete('attachment', 'AttachmentController@destroy')->middleware('permission:all.attachment');
+
+        Route::get('webInfo', 'WebController@index');
+        Route::patch('webInfo', 'WebController@update');
+
+        Route::get('category', 'CategoryController@index');
+        Route::post('category', 'CategoryController@store');
+        Route::delete('category/{category}', 'CategoryController@destroy');
+        Route::patch('category/{category}', 'CategoryController@update');
     });
 });
