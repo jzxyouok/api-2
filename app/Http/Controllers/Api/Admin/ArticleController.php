@@ -64,7 +64,7 @@ class ArticleController extends Controller
 
     public function destroy(Article $article)
     {
-        //
+        return $article->delete() ? 'success' : response('delete article fail', 422);
     }
 
     protected function attributes()
