@@ -17,13 +17,14 @@ class Category extends Model
         return $this->attributes['is_show'] == 'T';
     }
 
-    public function children()
+    public function setIsShowAttribute($value)
     {
-        return $this->hasMany(Category::class, 'parent_id');
+        $this->attributes['is_show'] = $value ? 'T' : 'F';
     }
 
-    public function allChildren()
+    public function article()
     {
-        return $this->children()->with('allChildren');
+        return $this->hasMany(Article::class);
     }
+
 }

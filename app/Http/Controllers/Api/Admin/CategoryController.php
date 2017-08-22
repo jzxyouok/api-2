@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Category;
+use App\Tools\PHPTree;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
@@ -11,9 +12,15 @@ use Illuminate\Validation\Rule;
 class CategoryController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
-        return Category::with('allChildren')->where(['parent_id' => 0])->get();
+        $categorys = Category::withCount('article')->where(function ($query) use ($request) {
+            if ($request->has('title')) {
+                $query->where('title', 'like', '%' . $request->title . '%');
+            }
+        })->get();
+
+        return count($categorys) ? PHPTree::makeTreeForHtml($categorys) : $categorys;
     }
 
     public function store(Request $request)
@@ -25,7 +32,7 @@ class CategoryController extends Controller
             'seo_title' => 'nullable|max:80',
             'seo_keywords' => 'nullable|max:100',
             'seo_description' => 'nullable|max:255',
-            'is_show' => 'in:T,F',
+            'is_show' => 'boolean',
         ], [], $this->attributes())->validate();
 
         return Category::create($data);
@@ -40,7 +47,7 @@ class CategoryController extends Controller
             'seo_title' => 'nullable|max:80',
             'seo_keywords' => 'nullable|max:100',
             'seo_description' => 'nullable|max:255',
-            'is_show' => 'in:T,F',
+            'is_show' => 'boolean',
         ], [], $this->attributes())->validate();
 
         $category->update($data);
@@ -49,10 +56,9 @@ class CategoryController extends Controller
 
     public function destroy(Category $category)
     {
-        if (count($category->children)) {
+        if (Category::where('parent_id', $category->id)->count()) {
             return response('必须先删除子栏目。', 422);
         }
-        $category->delete();
         return $category->delete() ? 'success' : response('delete category fail', 422);
     }
 

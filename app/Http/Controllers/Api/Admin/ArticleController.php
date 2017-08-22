@@ -27,7 +27,6 @@ class ArticleController extends Controller
             'title' => 'required|unique:article|max:50',
             'keywords' => 'nullable|max:80',
             'description' => 'nullable|max:255',
-            'is_show' => 'in:T,F',
             'content' => 'required',
         ], [], $this->attributes())->validate();
 
@@ -51,7 +50,6 @@ class ArticleController extends Controller
             'title' => ['required', 'max:50', 'unique:article', Rule::unique('article')->ignore($article->id)],
             'keywords' => 'nullable|max:80',
             'description' => 'nullable|max:255',
-            'is_show' => 'in:T,F',
         ], [], $this->attributes())->validate();
 
         if ($request->has('content')) {

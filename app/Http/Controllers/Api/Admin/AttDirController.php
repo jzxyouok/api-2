@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\AttDir;
+use App\Tools\PHPTree;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
@@ -11,9 +12,11 @@ use Illuminate\Support\Facades\Validator;
 class AttDirController extends Controller
 {
 
-    public function index(Request $request)
+    public function index()
     {
-        return AttDir::with('allChildren')->where(['parent_id' => 0])->get();
+        $atts = AttDir::get();
+
+        return count($atts) ? PHPTree::makeTree($atts) : $atts;
     }
 
     public function store(Request $request)
@@ -23,7 +26,6 @@ class AttDirController extends Controller
             'title' => 'required|between:2,15',
             'parent_id' => 'integer',
         ], [], $this->attributes())->validate();
-
 
         return AttDir::create($data);
     }
@@ -42,7 +44,7 @@ class AttDirController extends Controller
 
     public function destroy(AttDir $attDir)
     {
-        if (count($attDir->children)) {
+        if (AttDir::where('parent_id', $attDir->id)->count()) {
             return response('必须先删除子文件夹。', 422);
         }
         // 删除附件
