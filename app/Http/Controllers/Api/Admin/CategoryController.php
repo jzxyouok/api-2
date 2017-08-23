@@ -20,7 +20,15 @@ class CategoryController extends Controller
             }
         })->get();
 
-        return count($categorys) ? PHPTree::makeTreeForHtml($categorys) : $categorys;
+        if (count($categorys) == 0) {
+            return $categorys;
+        }
+
+        if ($request->has('tree')) {
+            return PHPTree::makeTree($categorys);
+        }
+
+        return PHPTree::makeTreeForHtml($categorys);
     }
 
     public function store(Request $request)

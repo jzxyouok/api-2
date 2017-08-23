@@ -13,7 +13,6 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 $factory->define(App\User::class, function (Faker\Generator $faker) {
-//    $faker = Faker\Factory::create('zh_CN');
     static $password;
 
     return [
@@ -26,26 +25,16 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(App\AttDir::class, function (Faker\Generator $faker) {
-    $arrDirIds = \App\AttDir::get()->pluck('id');
-    return [
-        'title' => $faker->word,
-        'parent_id' => $faker->randomElement($arrDirIds->toArray()),
-    ];
-});
-
-$factory->define(App\Attachment::class, function (Faker\Generator $faker) {
-    $arrDirIds = \App\AttDir::get()->pluck('id');
+$factory->define(App\Article::class, function (Faker\Generator $faker) {
+    $categorys = \App\Category::get()->pluck('id');
     $userIds = \App\User::get()->pluck('id');
 
     $url = $faker->imageUrl();
     return [
-        'dir_id' => $faker->randomElement($arrDirIds->toArray()),
+        'category_id' => $faker->randomElement($categorys->toArray()),
         'user_id' => $faker->randomElement($userIds->toArray()),
-        'name' => $faker->sentence,
-        'file_size' => $faker->numberBetween(1024, 1024 * 1024),
-        'path' => $url,
-        'url' => $url,
-        'is_image' => 'T'
+        'title' => $faker->sentence,
+        'keywords' => implode($faker->words, ','),
+        'description' => $faker->paragraph,
     ];
 });

@@ -30,9 +30,9 @@ class CreateCategoryTable extends Migration
             $table->foreign('category_id')->references('id')->on('category')->onDelete('cascade');
             $table->integer('user_id')->unsigned()->index();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->string('title', 50);
-            $table->string('keywords', 80)->nullable();
-            $table->string('description', 255)->nullable();
+            $table->string('title', 150)->index();
+            $table->string('keywords', 180)->nullable();
+            $table->string('description', 355)->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
