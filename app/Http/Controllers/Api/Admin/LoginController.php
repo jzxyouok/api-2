@@ -33,7 +33,7 @@ class LoginController extends Controller
     protected function sendLoginResponse(Request $request)
     {
         $this->clearLoginAttempts($request);
-        $user = $this->guard()->user();
+        $user = $this->guard()->user()->makeVisible('api_token');
         $user->api_token = str_random(60);
         $user->save();
 

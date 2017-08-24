@@ -14,7 +14,7 @@ class CategoryController extends Controller
 
     public function index(Request $request)
     {
-        $categorys = Category::withCount('article')->where(function ($query) use ($request) {
+        $categorys = Category::withCount('articles')->where(function ($query) use ($request) {
             if ($request->has('title')) {
                 $query->where('title', 'like', '%' . $request->title . '%');
             }

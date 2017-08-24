@@ -12,9 +12,12 @@ class ArticleController extends Controller
 {
     public function index(Request $request)
     {
-        return Article::where(function ($query) use ($request) {
+        return Article::with('user')->where(function ($query) use ($request) {
             if ($request->has('title')) {
                 $query->where('title', 'like', '%' . $request->title . '%');
+            }
+            if ($request->has('category_id')) {
+                $query->where('category_id', $request->category_id);
             }
         })->paginate($request->per_page);
     }
@@ -60,9 +63,13 @@ class ArticleController extends Controller
         return $article;
     }
 
-    public function destroy(Article $article)
+    public function destroy(Request $request)
     {
-        return $article->delete() ? 'success' : response('delete article fail', 422);
+        Validator::make($request->all(), [
+            'ids' => 'required|array',
+        ], [], $this->attributes())->validate();
+
+        return Article::find($request->ids)->delete() ? 'success' : response('delete article fail', 422);
     }
 
     protected function attributes()
@@ -70,6 +77,7 @@ class ArticleController extends Controller
         return [
             'category_id' => '所属栏目',
             'keywords' => '关键词',
+            'ids' => '文章ID集合',
         ];
     }
 }

@@ -33,6 +33,7 @@ class CreateCategoryTable extends Migration
             $table->string('title', 150)->index();
             $table->string('keywords', 180)->nullable();
             $table->string('description', 355)->nullable();
+            $table->integer('click')->unsigned()->default(0);
             $table->timestamps();
             $table->softDeletes();
         });

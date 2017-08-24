@@ -14,7 +14,7 @@ class AttDirController extends Controller
 
     public function index()
     {
-        $atts = AttDir::get();
+        $atts = AttDir::withCount('attachments')->get();
 
         return count($atts) ? PHPTree::makeTree($atts) : $atts;
     }

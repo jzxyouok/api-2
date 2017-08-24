@@ -22,7 +22,7 @@ class Category extends Model
         $this->attributes['is_show'] = $value ? 'T' : 'F';
     }
 
-    public function article()
+    public function articles()
     {
         return $this->hasMany(Article::class);
     }
