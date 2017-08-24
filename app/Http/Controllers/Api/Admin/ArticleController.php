@@ -69,7 +69,7 @@ class ArticleController extends Controller
             'ids' => 'required|array',
         ], [], $this->attributes())->validate();
 
-        return Article::find($request->ids)->delete() ? 'success' : response('delete article fail', 422);
+        return Article::destroy($request->ids) ? 'success' : response('delete article fail', 422);
     }
 
     protected function attributes()
