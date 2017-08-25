@@ -49,6 +49,7 @@ Route::group(['namespace' => 'Api\Admin', 'prefix' => 'admin'], function () {
         Route::patch('category/{category}', 'CategoryController@update');
 
         Route::get('article', 'ArticleController@index');
+        Route::get('article/{article}', 'ArticleController@show');
         Route::post('article', 'ArticleController@store');
         Route::delete('article', 'ArticleController@destroy');
         Route::patch('article/{article}', 'ArticleController@update');

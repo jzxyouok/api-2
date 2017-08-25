@@ -27,8 +27,8 @@ class ArticleController extends Controller
         $data = $request->all();
         Validator::make($data, [
             'category_id' => 'integer|exists:category,id',
-            'title' => 'required|unique:article|max:50',
-            'keywords' => 'nullable|max:80',
+            'title' => 'required|unique:article|max:150',
+            'keywords' => 'nullable|max:180',
             'description' => 'nullable|max:255',
             'content' => 'required',
         ], [], $this->attributes())->validate();
@@ -41,8 +41,7 @@ class ArticleController extends Controller
 
     public function show(Article $article)
     {
-        $article->load('articleData');
-        return $article;
+        return $article->load('articleData');
     }
 
     public function update(Request $request, Article $article)
@@ -50,17 +49,18 @@ class ArticleController extends Controller
         $data = $request->all();
         Validator::make($data, [
             'category_id' => 'integer|exists:category,id',
-            'title' => ['required', 'max:50', 'unique:article', Rule::unique('article')->ignore($article->id)],
-            'keywords' => 'nullable|max:80',
+            'title' => ['required', 'max:150', Rule::unique('article')->ignore($article->id)],
+            'keywords' => 'nullable|max:180',
             'description' => 'nullable|max:255',
         ], [], $this->attributes())->validate();
 
-        if ($request->has('content')) {
-            $article->articleData()->update($data);
+        if ($request->has('article_data.content')) {
+            $arr = $request->get('article_data');
+            $article->articleData()->{$article->articleData ? 'update' : 'create'}($arr);
         }
 
         $article->update($data);
-        return $article;
+        return $article->load('articleData');
     }
 
     public function destroy(Request $request)
