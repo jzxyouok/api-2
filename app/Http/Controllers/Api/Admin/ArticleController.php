@@ -26,17 +26,19 @@ class ArticleController extends Controller
     {
         $data = $request->all();
         Validator::make($data, [
-            'category_id' => 'integer|exists:category,id',
-            'title' => 'required|unique:article|max:150',
+            'category_id' => 'required|integer|exists:category,id',
+            'title' => 'required|max:150',
             'keywords' => 'nullable|max:180',
             'description' => 'nullable|max:255',
-            'content' => 'required',
+            'article_data.content' => 'required',
         ], [], $this->attributes())->validate();
 
+        $data = array_merge($data, ['user_id' => $request->user()->id]);
         $article = Article::create($data);
-        $article->articleData()->create($data);
+        $arr = $request->get('article_data');
+        $article->articleData()->create($arr);
 
-        return $article;
+        return $article->load('articleData');
     }
 
     public function show(Article $article)
@@ -49,15 +51,14 @@ class ArticleController extends Controller
         $data = $request->all();
         Validator::make($data, [
             'category_id' => 'integer|exists:category,id',
-            'title' => ['required', 'max:150', Rule::unique('article')->ignore($article->id)],
+            'title' => 'required|max:150',
             'keywords' => 'nullable|max:180',
             'description' => 'nullable|max:255',
+            'article_data.content' => 'required',
         ], [], $this->attributes())->validate();
 
-        if ($request->has('article_data.content')) {
-            $arr = $request->get('article_data');
-            $article->articleData()->{$article->articleData ? 'update' : 'create'}($arr);
-        }
+        $arr = $request->get('article_data');
+        $article->articleData()->{$article->articleData ? 'update' : 'create'}($arr);
 
         $article->update($data);
         return $article->load('articleData');
