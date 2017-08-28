@@ -9,3 +9,4 @@ Route::get('/', function () {
 });
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/t', 'TestController@index');
