@@ -53,5 +53,7 @@ Route::group(['namespace' => 'Api\Admin', 'prefix' => 'admin'], function () {
         Route::post('article', 'ArticleController@store');
         Route::delete('article', 'ArticleController@destroy');
         Route::patch('article/{article}', 'ArticleController@update');
+
+        Route::get('loc', 'LocController@index');
     });
 });
