@@ -1,3 +1,18 @@
+/*
+Navicat MySQL Data Transfer
+
+Source Server         : 127.0.0.1
+Source Server Version : 50553
+Source Host           : 127.0.0.1:3306
+Source Database       : api
+
+Target Server Type    : MYSQL
+Target Server Version : 50553
+File Encoding         : 65001
+
+Date: 2017-08-29 11:48:16
+*/
+
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
@@ -6,8 +21,8 @@ SET FOREIGN_KEY_CHECKS=0;
 DROP TABLE IF EXISTS `loc`;
 CREATE TABLE `loc` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `code` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `value` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `label` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `parent_id` int(10) unsigned NOT NULL DEFAULT '0',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,

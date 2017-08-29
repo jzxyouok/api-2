@@ -12,6 +12,10 @@ class Loc extends Model
         'code', 'name', 'parent_id'
     ];
 
+    protected $hidden = [
+        'created_at', 'updated_at'
+    ];
+
     public function children()
     {
         return $this->hasMany(Loc::class, 'parent_id');

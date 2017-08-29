@@ -11,6 +11,6 @@ class LocController extends Controller
     public function index(Request $request)
     {
         $parent_id = $request->get('parent_id', 0);
-        return Loc::where('parent_id', $parent_id)->get();
+        return Loc::with('allChildren')->where('parent_id', $parent_id)->get();
     }
 }
