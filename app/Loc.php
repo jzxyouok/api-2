@@ -9,7 +9,7 @@ class Loc extends Model
     protected $table = 'loc';
 
     protected $fillable = [
-        'code', 'name', 'parent_id'
+        'value', 'label', 'parent_id'
     ];
 
     protected $hidden = [

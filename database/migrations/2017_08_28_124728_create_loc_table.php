@@ -15,8 +15,8 @@ class CreateLocTable extends Migration
     {
         Schema::create('loc', function (Blueprint $table) {
             $table->increments('id')->unsigned();
-            $table->string('code');
-            $table->string('name');
+            $table->string('value');
+            $table->string('label');
             $table->integer('parent_id')->unsigned()->default(0);
             $table->timestamps();
         });
