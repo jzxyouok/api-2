@@ -55,5 +55,10 @@ Route::group(['namespace' => 'Api\Admin', 'prefix' => 'admin'], function () {
         Route::patch('article/{article}', 'ArticleController@update');
 
         Route::get('loc', 'LocController@index');
+
+        Route::get('mdd', 'MddController@index');
+        Route::post('mdd', 'MddController@store');
+        Route::delete('mdd/{mdd}', 'MddController@destroy');
+        Route::patch('mdd/{mdd}', 'MddController@update');
     });
 });
